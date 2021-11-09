@@ -8,4 +8,6 @@
 
 [komentorivi.txt](https://github.com/olevaltt/ot-harjoitustyo_syksy_2021/blob/master/laskarit/viikko1/komentorivi.txt)
 
+Tämä teksti on kirjoitettu *kursiivilla* ja tämä on **lihavoitu**.
+
 
