@@ -1,0 +1,119 @@
+kurssit
+├── ot2020
+│   └── viikko1
+│       └── Unicafe
+│           ├── pom.xml
+│           └── src
+│               ├── main
+│               │   └── java
+│               │       └── com
+│               │           └── mycompany
+│               │               └── unicafe
+│               │                   ├── Kassapaate.java
+│               │                   ├── Maksukortti.java
+│               │                   └── Paaohjelma.java
+│               └── test
+│                   └── java
+│                       └── com
+│                           └── mycompany
+│                               └── unicafe
+│                                   └── MaksukorttiTest.java
+├── ot2021
+│   └── viikko1
+│       └── unicafe
+│           ├── poetry.lock
+│           ├── pyproject.toml
+│           └── src
+│               ├── index.py
+│               ├── kassapaate.py
+│               ├── maksukortti.py
+│               └── tests
+│                   ├── __init__.py
+│                   └── maksukortti_test.py
+└── ot2021kevat
+    ├── ot-harjoitustyo_2021
+    │   ├── Chordtrainer
+    │   │   ├── pom.xml
+    │   │   ├── src
+    │   │   │   ├── main
+    │   │   │   │   └── java
+    │   │   │   │       └── Chordtrainer
+    │   │   │   │           ├── Main.java
+    │   │   │   │           └── ui
+    │   │   │   │               └── ChordtrainerUi.java
+    │   │   │   └── test
+    │   │   │       └── java
+    │   │   │           └── Chordtrainer
+    │   │   │               └── ui
+    │   │   │                   └── UiTest.java
+    │   │   └── target
+    │   │       ├── classes
+    │   │       │   └── Chordtrainer
+    │   │       │       ├── Main.class
+    │   │       │       └── ui
+    │   │       │           └── ChordtrainerUi.class
+    │   │       ├── generated-sources
+    │   │       │   └── annotations
+    │   │       └── maven-status
+    │   │           └── maven-compiler-plugin
+    │   │               └── compile
+    │   │                   └── default-compile
+    │   │                       ├── createdFiles.lst
+    │   │                       └── inputFiles.lst
+    │   ├── dokumentaatio
+    │   │   ├── tuntikirjanpito.md
+    │   │   └── vaatimusmaarittely.md
+    │   ├── laskarit
+    │   │   ├── viikko1
+    │   │   │   ├── gitlog.txt
+    │   │   │   └── komentorivi.txt
+    │   │   └── viikko2
+    │   │       ├── Maksukortti
+    │   │       │   ├── pom.xml
+    │   │       │   └── src
+    │   │       │       ├── main
+    │   │       │       │   └── java
+    │   │       │       │       └── Maksukortti.java
+    │   │       │       └── test
+    │   │       │           └── java
+    │   │       │               └── MaksukorttiTest.java
+    │   │       ├── Unicafe
+    │   │       │   ├── pom.xml
+    │   │       │   └── src
+    │   │       │       ├── main
+    │   │       │       │   └── java
+    │   │       │       │       └── com
+    │   │       │       │           └── mycompany
+    │   │       │       │               └── unicafe
+    │   │       │       │                   ├── Kassapaate.java
+    │   │       │       │                   ├── Maksukortti.java
+    │   │       │       │                   └── Paaohjelma.java
+    │   │       │       └── test
+    │   │       │           └── java
+    │   │       │               └── com
+    │   │       │                   └── mycompany
+    │   │       │                       └── unicafe
+    │   │       │                           ├── KassapaateTest.java
+    │   │       │                           └── MaksukorttiTest.java
+    │   │       └── Unicafe_testikattavuus.png
+    │   └── README.md
+    └── viikko1
+        └── Unicafe
+            ├── pom.xml
+            └── src
+                ├── main
+                │   └── java
+                │       └── com
+                │           └── mycompany
+                │               └── unicafe
+                │                   ├── Kassapaate.java
+                │                   ├── Maksukortti.java
+                │                   └── Paaohjelma.java
+                └── test
+                    └── java
+                        └── com
+                            └── mycompany
+                                └── unicafe
+                                    └── MaksukorttiTest.java
+
+76 directories, 40 files

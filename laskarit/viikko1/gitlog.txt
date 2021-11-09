@@ -1,0 +1,94 @@
+commit 862bae9698cda0c8475c6b074c3dfdc79f89a6f5
+Author: Valtteri Olejniczak <valtteri.olejniczak@outlook.com>
+Date:   Tue Nov 9 16:52:37 2021 +0200
+
+    muutoksia
+
+ tiedostoja/file2             | 0
+ tiedostoja/{file1 => file22} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 6ad7d23a2c2e3a22da66074d29aa624f4ddef4ce
+Author: Valtteri Olejniczak <valtteri.olejniczak@outlook.com>
+Date:   Tue Nov 9 16:49:58 2021 +0200
+
+    lisayksia
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 3051ab32000980ef3c81167e26cbb0de5835fd58
+Author: Valtteri Olejniczak <valtteri.olejniczak@outlook.com>
+Date:   Tue Nov 9 16:42:19 2021 +0200
+
+    muutoksia
+
+ eka.txt    | 4 +++-
+ kolmas.txt | 2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+commit ca10f5292f8424c439e2eb8a4a512889ce325f9e
+Author: Valtteri Olejniczak <valtteri.olejniczak@outlook.com>
+Date:   Tue Nov 9 16:36:00 2021 +0200
+
+    uudelleennimenta
+
+ tiedosto.txt => eka.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 2e52513bc0c5e48dd6767aabd4c06e7605f89bbc
+Author: Valtteri Olejniczak <valtteri.olejniczak@outlook.com>
+Date:   Tue Nov 9 16:34:27 2021 +0200
+
+    poisto
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit e9bb068f50590a93fd438dd7c6184d4e3c2b648d
+Author: Valtteri Olejniczak <valtteri.olejniczak@outlook.com>
+Date:   Tue Nov 9 16:30:18 2021 +0200
+
+    lisäys
+
+ stuff/jokintiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit ceb99ea37dcfa78069b52a6b563f8873b575cf67
+Author: Valtteri Olejniczak <valtteri.olejniczak@outlook.com>
+Date:   Tue Nov 9 16:28:59 2021 +0200
+
+    kaksi muutosta
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 79cf6702b678456b2425a58692d6677d9ea36e14
+Author: Valtteri Olejniczak <valtteri.olejniczak@outlook.com>
+Date:   Tue Nov 9 16:27:54 2021 +0200
+
+    lisäys
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit ec9dc6aad04c56e99d09afd4a9d350401b14c410
+Author: Valtteri Olejniczak <valtteri.olejniczak@outlook.com>
+Date:   Tue Nov 9 16:25:56 2021 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 2 ++
+ toinen.txt   | 0
+ 2 files changed, 2 insertions(+)
+
+commit e26127b37b3de86b6893d5a0decb7d859de1bfa5
+Author: Valtteri Olejniczak <valtteri.olejniczak@outlook.com>
+Date:   Tue Nov 9 16:24:13 2021 +0200
+
+    luotiin tiedosto
+
+ tiedosto.txt | 0
