@@ -4,17 +4,17 @@ import java.util.HashMap;
 
 public class Player {
     
-    public int playerNumber;
+    public int playerID;
     public HashMap<Category, Integer> playerScore;
     
-    public Player(int playerNumber) {
+    public Player(int playerID) {
         this.playerScore = new HashMap<>();
-        this.playerNumber = playerNumber;
+        this.playerID = playerID;
     }
     
     
     public int getPlayerNumber() {
-        return this.playerNumber;
+        return this.playerID;
     }
     
     

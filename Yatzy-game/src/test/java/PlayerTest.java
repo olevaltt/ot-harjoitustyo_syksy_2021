@@ -10,13 +10,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class PlayerTest {
+    
     Player player;
+    Player player2;
+    
     public PlayerTest() {
         player = new Player(1);
+        player2 = new Player(2);
     }
+    
 
     @org.junit.jupiter.api.BeforeAll
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() throws Exception {  
     }
 
     @org.junit.jupiter.api.AfterAll
@@ -58,5 +63,9 @@ public class PlayerTest {
     @Test
     public void createdPlayerExists() {
         assertTrue(player!=null);
+    }
+    @Test
+    public void createdPlayer2Exists() {
+        assertTrue(player2!=null);
     }
 }
