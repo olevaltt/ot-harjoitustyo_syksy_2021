@@ -11,6 +11,6 @@
 ## Ohjeet
 
 - Ohjelma käynnistetään komennolla 
-  - mvn compile exec:java -Dexec.mainClass=yatzy.ui.YatzyUi.java
+  - mvn compile exec:java -Dexec.mainClass=yatzy.ui.YatzyUi
 - Testikattavuusraportin voi generoimaan komennolla
   - mvn test jacoco:report
