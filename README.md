@@ -14,11 +14,16 @@ Tällä sovelluksella voi pelata noppapeli Yatzya "hot-seat"-muotoisesti 1-4 pel
 
 [viikko 5](https://github.com/olevaltt/ot-harjoitustyo_syksy_2021/releases/tag/viikko5)
 
-## Ohjeet
+## Ohjeet ja komentorivikomennot
+- Jar-tiedoston luonti onnistuu komennolla
+  - mvn package
+  - tiedosto Yatzy-game-1.0-SNAPSHOT.jar generoituu kansioon target
+  - tiedoston voi ajaa komennolla 
+    - java -jar Yatzy-game-1.0-SNAPSHOT.jar
 
-- Lataa aluksi koneellesi tiedosto Yatzy-game-1.0-SNAPSHOT.jar viikon 5 releasen alta
-  - Tämän jälkeen navigoi komentorivillä kansioon johon jar-tiedosto on tallennettu
-  - Ohjelma käynnistyy komennolla java -jar Yatzy-game-1.0-SNAPSHOT.jar
+- Testit voi ajaa komennolla mvn test
 
 - Testikattavuusraportin voi generoida komennolla
   - mvn test jacoco:report
+- Checkstyletarkastuksen voi suorittaa komennolla 
+  - mvn jxr:jxr checkstyle:checkstyle
