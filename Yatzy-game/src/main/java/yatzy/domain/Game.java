@@ -7,13 +7,13 @@ public class Game {
     
     Queue<Player> players = new LinkedList<>();
     
-    
-    public void createPlayers(int nOf_players) {
-        for (int i = 0; i < nOf_players - 1; i++) {
+    public Game(int nOf_Players) {
+        for (int i = 0; i < nOf_Players - 1; i++) {
             Player player = new Player(i + 1);
             players.add(player);
         }
     }
+    
     
     public int getPlayerScore(Player player, Category category) {
         return player.getScore(category);
