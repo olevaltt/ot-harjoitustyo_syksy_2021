@@ -15,9 +15,9 @@ public class Dice {
     
     public int[] throwDice() {
 
-        for (int i = 0; i < NOF_DICE - 1; i++) {
+        for (int i = 0; i < NOF_DICE; i++) {
             if (result[i] == -1) {
-                result[i] = (int)(Math.random() * 6) + 1;
+                result[i] = (int)  (Math.random() * 6) + 1;
             }
         }
         return result;
@@ -29,12 +29,15 @@ public class Dice {
         }
     }
     
+    public int[] getResult() {
+        return this.result;
+    }
+    
     public void clearDice() {
         Arrays.fill(this.result, -1);
     }
     
     
-    //add functionality to thwrow 1-5 dice, keep track of the score of individual dice and clear the results at the end.
     
     
 }

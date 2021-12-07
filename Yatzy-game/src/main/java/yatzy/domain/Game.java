@@ -7,8 +7,8 @@ public class Game {
     
     Queue<Player> players = new LinkedList<>();
     
-    public Game(int nOf_Players) {
-        for (int i = 0; i < nOf_Players - 1; i++) {
+    public Game(int playerCount) {
+        for (int i = 0; i < playerCount - 1; i++) {
             Player player = new Player(i + 1);
             players.add(player);
         }
@@ -20,8 +20,8 @@ public class Game {
     }
     
     
-    private Player getPlayerByID(int ID) {
-        return players.stream().filter(player -> player.playerID == ID).findAny().orElse(null);
+    private Player getPlayerByID(int id) {
+        return players.stream().filter(player -> player.playerID == id).findAny().orElse(null);
     }
     
     public Player getCurrentPlayer() {
