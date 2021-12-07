@@ -4,8 +4,8 @@
 Sovelluksella voi pelata noppapeli Yatzya "hot seat"-muotoisesti.
 
 ## Perusversion tarjoamat toiminnallisuudet
-- Aluksi voidaan valita pelaajien määrä (1-4).
-- Kun pelaajien määrä on valittu voidaan peli aloittaa.
+- Aluksi voidaan valita pelaajien määrä (1-4). DONE
+- Kun pelaajien määrä on valittu voidaan peli aloittaa. DONE
 - Peli toimii vuoropohajaisesti.
 - Vuoron aikana pelaaja heittää viittä noppaa maksimissaan kolme kertaa, jonka jälkeen joko kirjataan ylös heitetty tulos pelaajan valitsemaan kohtaan, tai pelaaja voi vetää jonkin kohdan pistetaulukosta yli.
 - Tämän jälkeen vuoro siirtyy seuraavalle pelaajalle.
