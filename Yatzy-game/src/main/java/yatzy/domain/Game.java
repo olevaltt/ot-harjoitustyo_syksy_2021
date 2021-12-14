@@ -19,11 +19,15 @@ public class Game {
         return player.getScore(category);
     }
     
-    
-    private Player getPlayerByID(int id) {
-        return players.stream().filter(player -> player.playerID == id).findAny().orElse(null);
+    public void addPlayerScore(Player player, Category category, int result) {
+        player.addScore(category, result);
     }
     
+    /*
+    private Player getPlayerById(int id) {
+        return players.stream().filter(player -> player.playerID == id).findAny().orElse(null);
+    }
+    */
     public Player getCurrentPlayer() {
         return players.peek();
     }
