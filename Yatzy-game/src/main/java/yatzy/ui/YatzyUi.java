@@ -13,6 +13,10 @@ import javafx.scene.control.Label;
 import java.util.Scanner;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.control.ToggleButton;
+import java.util.ArrayList;
+
+
 
 
 public class YatzyUi extends Application {
@@ -41,11 +45,11 @@ public class YatzyUi extends Application {
     
     
     
-    //So far its possible to initialize scoreboard and reroll all five dice.
+    //So far its possible to initialize scoreboard and reroll dice.
     
     //Todo:
-    //Get number of players from user and initialize based on that.
-    //Draw UI
+    //Get number of players from user and initialize based on that. DONE
+    //Draw UI DONE
     //Add turn conter
     //Add turn queue
     
@@ -146,9 +150,19 @@ public class YatzyUi extends Application {
     private GridPane drawDice() {
         GridPane grid = new GridPane();
         
-        for(int x = 0; x < 5; x++) {
-            grid.add(new Button("select"), x, 1);
+        
+        ToggleButton[] buttons = new ToggleButton[5];
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i] = new ToggleButton("Select");
         }
+      
+        
+        
+        for (int i = 0; i < buttons.length; i++) {
+            grid.add(buttons[i], i, 1);
+        }
+        
+
         
         HBox dice = new HBox();
         
@@ -165,14 +179,19 @@ public class YatzyUi extends Application {
         Button reroll = new Button("reroll");
         grid.add(reroll,2 , 2);
         reroll.setOnAction((event) -> {            
-            refreshDice(dice, die1, die2, die3, die4, die5);
+            refreshDice(dice, die1, die2, die3, die4, die5, buttons);
+            for (ToggleButton button : buttons) {
+                button.setSelected(false);
+            }
         });
 
         return grid;    
     }
     
-    private void refreshDice(HBox dice, Label die1, Label die2, Label die3, Label die4, Label die5){
-        int[] result = this.dice.throwDice();
+    private void refreshDice(HBox dice, Label die1, Label die2, Label die3, Label die4, Label die5, ToggleButton[] buttons){
+        
+
+        int[] result = throwDice(buttons);
         
         dice.getChildren().clear();
         
@@ -184,8 +203,25 @@ public class YatzyUi extends Application {
 
         dice.getChildren().addAll(die1, die2, die3, die4, die5);
 
-        this.dice.clearDice();
+
  
+    }
+    
+    private int[] throwDice(ToggleButton[] buttons) {
+        ArrayList<Integer> diceIndices = new ArrayList<>();
+        for (int i = 0; i < buttons.length; i++) {
+            if (buttons[i].isSelected()) {
+                diceIndices.add(i);
+            }
+        }
+
+        int[] diceIndicesArray = new int[diceIndices.size()];
+        for (int i = 0; i < diceIndicesArray.length; i++) {
+            diceIndicesArray[i] = diceIndices.get(i);
+        }
+
+        return this.dice.throwDice(diceIndicesArray);
+   
     }
     
     

@@ -10,32 +10,27 @@ public class Dice {
     int[] result = new int[NOF_DICE];
     
     public Dice() {
-        Arrays.fill(this.result, -1);
+        Arrays.fill(this.result, 1);
+    }
+
+    
+    public int[] throwAllDice() {
+        return throwDice(new int[]{0,1,2,3,4});
     }
     
-    public int[] throwDice() {
-
-        for (int i = 0; i < NOF_DICE; i++) {
-            if (result[i] == -1) {
-                result[i] = (int)  (Math.random() * 6) + 1;
-            }
+    public int[] throwDice(int[] throwableDice) {
+        for (int diceIndex : throwableDice) {
+            result[diceIndex] = (int)  (Math.random() * 6) + 1;
         }
+        
         return result;
     }
-    
-    public void chooseThrowableDice(int[] throwableDice) {
-        for (int index : throwableDice) {
-            result[index] = -1;
-        }
-    }
-    
+
     public int[] getResult() {
         return this.result;
     }
     
-    public void clearDice() {
-        Arrays.fill(this.result, -1);
-    }
+
     
     
     

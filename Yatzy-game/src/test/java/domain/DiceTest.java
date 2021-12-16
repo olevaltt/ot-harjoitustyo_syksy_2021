@@ -23,7 +23,8 @@ public void setUp() {
     
 @Test
 public void throwDiceDoesNotReturnNull() {
-    assertNotEquals(testDice.throwDice(), null);
+    int[] list = new int[]{0,2,4};
+    assertNotEquals(testDice.throwDice(list), null);
 }
 
 @Test
