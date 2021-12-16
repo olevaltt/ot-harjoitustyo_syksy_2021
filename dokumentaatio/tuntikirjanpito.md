@@ -6,4 +6,5 @@ päivä | tunnit | kuvaus
 6.12.  | 4 | Aloitin UI:n tekemisen.
 7.12.  | 6 | Koodasin toiminnallisuuden heittää viittä noppaa.
 14.12. | 3 | Loin lisää testejä.
-yht. | 28 |
+16.12. | 4 | Laajensin nopan toiminnallisuutta
+yht. | 32 |
