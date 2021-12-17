@@ -15,13 +15,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.ToggleButton;
 import java.util.ArrayList;
-
-
+import javafx.beans.property.SimpleIntegerProperty;
 
 
 public class YatzyUi extends Application {
 
-    private Dice dice;
+    private Dice dice = new Dice();
     //private Player player;
     int nOf_players;
     Scanner input;
@@ -29,11 +28,15 @@ public class YatzyUi extends Application {
     private Stage window;
     private static final int SCREEN_WIDTH = 700;
     private static final int SCREEN_HEIGHT = 700;
+    private SimpleIntegerProperty turnCount;
+    private SimpleIntegerProperty throwCount;
     
     public YatzyUi() {
-        this.dice = new Dice();
+        //this.dice = new Dice();
         this.nOf_players = -1;
         this.input = new Scanner(System.in);
+        this.turnCount = new SimpleIntegerProperty();
+        this.throwCount = new SimpleIntegerProperty();
     
     }
     
@@ -42,9 +45,7 @@ public class YatzyUi extends Application {
         this.window = window;
         setWelcomeScene();
     }
-    
-    
-    
+
     //So far its possible to initialize scoreboard and reroll dice.
     
     //Todo:
@@ -193,6 +194,7 @@ public class YatzyUi extends Application {
 
         int[] result = throwDice(buttons);
         
+        
         dice.getChildren().clear();
         
         die1 = new Label(String.valueOf(result[0]));
@@ -219,7 +221,7 @@ public class YatzyUi extends Application {
         for (int i = 0; i < diceIndicesArray.length; i++) {
             diceIndicesArray[i] = diceIndices.get(i);
         }
-
+        this.game.increaseThrowCounter();
         return this.dice.throwDice(diceIndicesArray);
    
     }
