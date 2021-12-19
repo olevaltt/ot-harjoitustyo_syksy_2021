@@ -57,6 +57,10 @@ public class Game {
         this.throwCount++;
     }
     
+    public int getThrowCount() {
+        return this.throwCount;
+    }
+    
     public boolean throwAllowed() {
         if (this.throwCount >= 3) {
             return false;

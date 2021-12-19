@@ -173,8 +173,12 @@ public class YatzyUi extends Application {
     private VBox drawDice() {
         VBox main = new VBox();
         Label turnInfo = new Label();
-        StringBinding whoseTurn = Bindings.createStringBinding(() -> String.valueOf(this.game.getCurrentPlayer().playerID), currentPlayer);
-        turnInfo.textProperty().bind(whoseTurn);
+        StringBinding infoText = Bindings.createStringBinding(
+                () -> "Kierros " + String.valueOf(currentTurn.get()) + ", Pelaajan " + String.valueOf(currentPlayer.get()) + " vuoro, Heitetty " + String.valueOf(throwCount.get()) + " kertaa",
+                currentPlayer, currentTurn, throwCount
+        );
+        
+        turnInfo.textProperty().bind(infoText);
         main.getChildren().add(turnInfo);
 
         
@@ -190,7 +194,7 @@ public class YatzyUi extends Application {
 
         ToggleButton[] buttons = new ToggleButton[5];
         for (int i = 0; i < buttons.length; i++) {
-            buttons[i] = new ToggleButton("Select");
+            buttons[i] = new ToggleButton("Valitse");
         }
 
         for (int i = 0; i < buttons.length; i++) {
@@ -199,9 +203,20 @@ public class YatzyUi extends Application {
         
         main.getChildren().add(grid);
         
-        Button reroll = new Button("reroll");
+        Button roll = new Button("Heitä");
         
-        reroll.setOnAction((event) -> {  
+        //Allows the player throw the dice only when 1 or more dice has been selected
+        roll.disableProperty().bind(
+                buttons[0].selectedProperty()
+                .or(buttons[1].selectedProperty())
+                .or(buttons[2].selectedProperty())
+                .or(buttons[3].selectedProperty())
+                .or(buttons[4].selectedProperty())
+                .not()
+                .or(throwCount.greaterThanOrEqualTo(3))
+        );
+        
+        roll.setOnAction((event) -> {  
             int[] newResult = throwDice(buttons);
             result.set(Arrays.copyOf(newResult, 5));
             for (ToggleButton button : buttons) {
@@ -209,7 +224,7 @@ public class YatzyUi extends Application {
             }
         });
         
-        main.getChildren().add(reroll);
+        main.getChildren().add(roll);
         
         return main;    
     }
@@ -227,6 +242,7 @@ public class YatzyUi extends Application {
             diceIndicesArray[i] = diceIndices.get(i);
         }
         this.game.increaseThrowCounter();
+        this.throwCount.set(this.game.getThrowCount());
         return this.dice.throwDice(diceIndicesArray);
    
     }
