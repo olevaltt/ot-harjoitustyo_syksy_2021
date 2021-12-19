@@ -10,34 +10,39 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import java.util.Scanner;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.ToggleButton;
 import java.util.ArrayList;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.*;
+import javafx.beans.binding.*;
+import java.util.Collections;
+import javafx.collections.*;
 
 
 public class YatzyUi extends Application {
 
-    private Dice dice = new Dice();
-    //private Player player;
+    final private Dice dice;
     int nOf_players;
-    Scanner input;
     private Game game;
     private Stage window;
     private static final int SCREEN_WIDTH = 700;
     private static final int SCREEN_HEIGHT = 700;
-    private SimpleIntegerProperty turnCount;
-    private SimpleIntegerProperty throwCount;
+    final private SimpleIntegerProperty throwCount;
+    
+    //0 -> button cannot be pressed
+    //1 -> button can be pressed but the throw won't fit
+    //2 -> button can be pressed and the throw fits
+    private SimpleListProperty<Integer> buttonState;
     
     public YatzyUi() {
-        //this.dice = new Dice();
+        this.dice = new Dice();
         this.nOf_players = -1;
-        this.input = new Scanner(System.in);
-        this.turnCount = new SimpleIntegerProperty();
         this.throwCount = new SimpleIntegerProperty();
-    
+        this.buttonState = new SimpleListProperty<>();
+        ObservableList<Integer> observableList = FXCollections.observableArrayList(new ArrayList<Integer>(Collections.nCopies(15, 0)));
+        this.buttonState = new SimpleListProperty<>(observableList);
+        
     }
     
     @Override
@@ -130,13 +135,23 @@ public class YatzyUi extends Application {
         
         
         int i = 1;
+        int j = 0;
         for (Category value: Category.values()) {
             if(i == 7) {
                 i = 9;
             }
-            scoreboard.add(new Button("lukitse pisteet"), 0, i);
+            
+            Button button = new Button("lukitse pisteet");
+            final int index = j;
+            BooleanBinding isLocked = Bindings.createBooleanBinding(() -> buttonState.get(index) == 0, buttonState);
+            button.textProperty().bind(
+                new When(isLocked).then("lukittu").otherwise("lukitse pisteet")
+            );
+            button.disableProperty().bind(isLocked);
+            scoreboard.add(button, 0, i);
             scoreboard.add(new Label(value.label), 1, i);
             i++;
+            j++;
             
         }
         scoreboard.add(new Label("Yht."), 1, 7);
