@@ -32,6 +32,7 @@ public class YatzyUi extends Application {
     final private SimpleIntegerProperty throwCount;
     final private SimpleIntegerProperty currentTurn;
     final private SimpleObjectProperty<int[]> result;
+    final private SimpleIntegerProperty currentPlayer;
     
     //0 -> button cannot be pressed
     //1 -> button can be pressed but the throw won't fit
@@ -43,6 +44,7 @@ public class YatzyUi extends Application {
         this.nOf_players = -1;
         this.throwCount = new SimpleIntegerProperty(0);
         this.currentTurn = new SimpleIntegerProperty(0);
+        this.currentPlayer = new SimpleIntegerProperty(1);
         this.result = new SimpleObjectProperty(new int[]{1,1,1,1,1});
         this.buttonState = new SimpleListProperty<>();
         ObservableList<Integer> observableList = FXCollections.observableArrayList(new ArrayList<Integer>(Collections.nCopies(15, 0)));
@@ -168,23 +170,16 @@ public class YatzyUi extends Application {
     
        
     
-    private GridPane drawDice() {
+    private VBox drawDice() {
+        VBox main = new VBox();
+        Label turnInfo = new Label("sampletext");
+        main.getChildren().add(turnInfo);
+        
+        
+        
         GridPane grid = new GridPane();
         
         
-        ToggleButton[] buttons = new ToggleButton[5];
-        for (int i = 0; i < buttons.length; i++) {
-            buttons[i] = new ToggleButton("Select");
-        }
-      
-        
-        
-        for (int i = 0; i < buttons.length; i++) {
-            grid.add(buttons[i], i, 1);
-        }
-        
-
-
         
         for (int i = 0; i < 5; i++) {
             Label label = new Label();
@@ -194,22 +189,31 @@ public class YatzyUi extends Application {
             grid.add(label, i, 0);
         }
 
+        ToggleButton[] buttons = new ToggleButton[5];
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i] = new ToggleButton("Select");
+        }
+
+        for (int i = 0; i < buttons.length; i++) {
+            grid.add(buttons[i], i, 1);
+        }
+        
+        main.getChildren().add(grid);
         
         Button reroll = new Button("reroll");
-        grid.add(reroll,2 , 2);
+        
         reroll.setOnAction((event) -> {  
             int[] newResult = throwDice(buttons);
             result.set(Arrays.copyOf(newResult, 5));
-            System.out.println(result.get()[0]);
             for (ToggleButton button : buttons) {
                 button.setSelected(false);
             }
         });
-
-        return grid;    
+        
+        main.getChildren().add(reroll);
+        
+        return main;    
     }
-    
-    
     
     private int[] throwDice(ToggleButton[] buttons) {
         ArrayList<Integer> diceIndices = new ArrayList<>();
