@@ -172,15 +172,14 @@ public class YatzyUi extends Application {
     
     private VBox drawDice() {
         VBox main = new VBox();
-        Label turnInfo = new Label("sampletext");
+        Label turnInfo = new Label();
+        StringBinding whoseTurn = Bindings.createStringBinding(() -> String.valueOf(this.game.getCurrentPlayer().playerID), currentPlayer);
+        turnInfo.textProperty().bind(whoseTurn);
         main.getChildren().add(turnInfo);
-        
-        
+
         
         GridPane grid = new GridPane();
-        
-        
-        
+                
         for (int i = 0; i < 5; i++) {
             Label label = new Label();
             final int index = i;
