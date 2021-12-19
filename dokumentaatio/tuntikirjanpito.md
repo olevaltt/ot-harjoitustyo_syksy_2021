@@ -8,5 +8,5 @@ päivä | tunnit | kuvaus
 14.12. | 3 | Loin lisää testejä.
 16.12. | 4 | Laajensin nopan toiminnallisuutta.
 17.12. | 2 | Lisäsin toiminnallisuutta Game-luokkaan.
-19.12. | 6 | Lisäsin pelisääntöjä koskevaa logiikkaa peliluokkaan ja tein UI:iin lisäyksiä.
-yht. | 40 |
+19.12. | 7 | Lisäsin pelisääntöjä koskevaa logiikkaa peliluokkaan ja tein UI:iin lisäyksiä.
+yht. | 41 |
