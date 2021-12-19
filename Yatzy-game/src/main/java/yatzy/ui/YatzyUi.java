@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.ToggleButton;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javafx.beans.property.*;
 import javafx.beans.binding.*;
 import java.util.Collections;
@@ -29,6 +30,8 @@ public class YatzyUi extends Application {
     private static final int SCREEN_WIDTH = 700;
     private static final int SCREEN_HEIGHT = 700;
     final private SimpleIntegerProperty throwCount;
+    final private SimpleIntegerProperty currentTurn;
+    final private SimpleObjectProperty<int[]> result;
     
     //0 -> button cannot be pressed
     //1 -> button can be pressed but the throw won't fit
@@ -38,7 +41,9 @@ public class YatzyUi extends Application {
     public YatzyUi() {
         this.dice = new Dice();
         this.nOf_players = -1;
-        this.throwCount = new SimpleIntegerProperty();
+        this.throwCount = new SimpleIntegerProperty(0);
+        this.currentTurn = new SimpleIntegerProperty(0);
+        this.result = new SimpleObjectProperty(new int[]{1,1,1,1,1});
         this.buttonState = new SimpleListProperty<>();
         ObservableList<Integer> observableList = FXCollections.observableArrayList(new ArrayList<Integer>(Collections.nCopies(15, 0)));
         this.buttonState = new SimpleListProperty<>(observableList);
@@ -179,23 +184,23 @@ public class YatzyUi extends Application {
         }
         
 
-        
-        HBox dice = new HBox();
-        
-        Label die1 = new Label(String.valueOf(this.dice.getResult()[0]));
-        Label die2 = new Label(String.valueOf(this.dice.getResult()[1]));
-        Label die3 = new Label(String.valueOf(this.dice.getResult()[2]));
-        Label die4 = new Label(String.valueOf(this.dice.getResult()[3]));
-        Label die5 = new Label(String.valueOf(this.dice.getResult()[4]));
 
-        dice.getChildren().addAll(die1, die2, die3, die4, die5);
         
-        grid.add(dice, 2, 0);
+        for (int i = 0; i < 5; i++) {
+            Label label = new Label();
+            final int index = i;
+            StringBinding text = Bindings.createStringBinding(() -> String.valueOf(result.get()[index]), result);
+            label.textProperty().bind(text);
+            grid.add(label, i, 0);
+        }
+
         
         Button reroll = new Button("reroll");
         grid.add(reroll,2 , 2);
-        reroll.setOnAction((event) -> {            
-            refreshDice(dice, die1, die2, die3, die4, die5, buttons);
+        reroll.setOnAction((event) -> {  
+            int[] newResult = throwDice(buttons);
+            result.set(Arrays.copyOf(newResult, 5));
+            System.out.println(result.get()[0]);
             for (ToggleButton button : buttons) {
                 button.setSelected(false);
             }
@@ -204,25 +209,7 @@ public class YatzyUi extends Application {
         return grid;    
     }
     
-    private void refreshDice(HBox dice, Label die1, Label die2, Label die3, Label die4, Label die5, ToggleButton[] buttons){
-        
-
-        int[] result = throwDice(buttons);
-        
-        
-        dice.getChildren().clear();
-        
-        die1 = new Label(String.valueOf(result[0]));
-        die2 = new Label(String.valueOf(result[1]));
-        die3 = new Label(String.valueOf(result[2]));
-        die4 = new Label(String.valueOf(result[3]));
-        die5 = new Label(String.valueOf(result[4]));
-
-        dice.getChildren().addAll(die1, die2, die3, die4, die5);
-
-
- 
-    }
+    
     
     private int[] throwDice(ToggleButton[] buttons) {
         ArrayList<Integer> diceIndices = new ArrayList<>();
