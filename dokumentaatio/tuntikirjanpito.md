@@ -9,4 +9,5 @@ päivä | tunnit | kuvaus
 16.12. | 4 | Laajensin nopan toiminnallisuutta.
 17.12. | 2 | Lisäsin toiminnallisuutta Game-luokkaan.
 19.12. | 7 | Lisäsin pelisääntöjä koskevaa logiikkaa peliluokkaan ja tein UI:iin lisäyksiä.
-yht. | 41 |
+20.12. | 3 | Jatkoin pelisääntöjen logiikan koodaamista.
+yht. | 44 |
