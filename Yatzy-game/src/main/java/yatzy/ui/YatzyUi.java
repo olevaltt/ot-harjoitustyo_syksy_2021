@@ -222,6 +222,7 @@ public class YatzyUi extends Application {
             for (ToggleButton button : buttons) {
                 button.setSelected(false);
             }
+            
         });
         
         main.getChildren().add(roll);

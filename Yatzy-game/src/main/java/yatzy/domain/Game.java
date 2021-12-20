@@ -2,6 +2,8 @@ package yatzy.domain;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import javafx.beans.property.ListProperty;
+import java.util.HashMap;
 
 
 
@@ -69,6 +71,78 @@ public class Game {
         }
     }
     
+    public void updateButtonState(ListProperty buttonState, int[] result) {
+        
+        
+
+        Category[] categories = Category.values();
+        HashMap<Category, Integer> scoreMap = getCurrentPlayer().getScore();
+     
+        for (int i = 0; i < 15; i++) {
+            
+            Integer score = scoreMap.get(categories[i]);
+            
+            if (score != null) {
+                buttonState.set(i, 0);
+            } else if (checkIfScoreIsPlaceable(categories[i], result)) {
+                buttonState.set(i, 2);
+            } else {
+                buttonState.set(i, 1);
+            }
+           
+        }
+       
+    }
+    
+    public boolean checkIfScoreIsPlaceable(Category category, int[] result) {
+        int[] listOfThrownDice = this.checkThrownDice(result);
+        
+        switch(category) {
+            case ONES:
+                
+                
+            case TWOS:
+                return true;
+                
+            case THREES:
+                return true;
+                
+            case FOURS:
+                
+                    
+            case FIVES:
+              
+                
+                
+            case SIXES:
+                
+            case ONEPAIR:
+                
+            case TWOPAIR:
+                
+            case THREEOFAKIND:
+                
+            case FOUROFAKIND:
+                
+            case SMALLSTRAIGHT:
+                
+            case LARGESTRAIGHT:
+                
+            case FULLHOUSE:
+                
+            case CHANCE:
+                
+            case YATZY:
+                
+                return false;
+                                                        
+                   
+        }
+        
+        
+        return false;
+    }
+    
     public int[] checkThrownDice(int[] result) {
         int[] thrownDice = new int[6];
         for (int i = 0; i < thrownDice.length; i++) {
@@ -108,26 +182,32 @@ public class Game {
     
     public void setCategoryOnes(int[] thrownDice) { 
         addPlayerScore(getCurrentPlayer(), Category.ONES, thrownDice[0] * 1);
+        
     }
     
     public void setCategoryTwos(int[] thrownDice) { 
         addPlayerScore(getCurrentPlayer(), Category.TWOS, thrownDice[1] * 1);
+        
     }
     
     public void setCategoryThrees(int[] thrownDice) { 
         addPlayerScore(getCurrentPlayer(), Category.THREES, thrownDice[2] * 1);
+        
     }
     
     public void setCategoryFours(int[] thrownDice) {
         addPlayerScore(getCurrentPlayer(), Category.FOURS, thrownDice[3] * 1);
+        
     }
     
     public void setCategoryFives(int[] thrownDice) {
         addPlayerScore(getCurrentPlayer(), Category.FIVES, thrownDice[4] * 1);
+        
     }
     
     public void setCategorySixes(int[] thrownDice) {
         addPlayerScore(getCurrentPlayer(), Category.SIXES, thrownDice[5] * 1);
+        
     }
     
     public void setCategoryOnePair(int[] thrownDice) {

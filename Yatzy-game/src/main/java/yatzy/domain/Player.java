@@ -22,8 +22,8 @@ public class Player {
         this.playerScore.put(category, result);
     }
     
-    public int getScore(Category category) {
-        return this.playerScore.get(category); 
+    public HashMap<Category, Integer> getScore() {
+        return this.playerScore; 
     }
     
 }
