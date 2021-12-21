@@ -34,6 +34,7 @@ public class YatzyUi extends Application {
     final private SimpleObjectProperty<int[]> result;
     final private SimpleIntegerProperty currentPlayer;
     
+    
     //0 -> button cannot be pressed
     //1 -> button can be pressed but the throw won't fit
     //2 -> button can be pressed and the throw fits
@@ -46,9 +47,9 @@ public class YatzyUi extends Application {
         this.currentTurn = new SimpleIntegerProperty(0);
         this.currentPlayer = new SimpleIntegerProperty(1);
         this.result = new SimpleObjectProperty(new int[]{1,1,1,1,1});
-        this.buttonState = new SimpleListProperty<>();
         ObservableList<Integer> observableList = FXCollections.observableArrayList(new ArrayList<Integer>(Collections.nCopies(15, 0)));
         this.buttonState = new SimpleListProperty<>(observableList);
+        
         
     }
     
@@ -148,15 +149,32 @@ public class YatzyUi extends Application {
                 i = 9;
             }
             
-            Button button = new Button("lukitse pisteet");
+            Button button = new Button();
             final int index = j;
             BooleanBinding isLocked = Bindings.createBooleanBinding(() -> buttonState.get(index) == 0, buttonState);
             button.textProperty().bind(
-                new When(isLocked).then("lukittu").otherwise("lukitse pisteet")
+                Bindings.createStringBinding(() -> {
+                    switch(buttonState.get(index)) {
+                        
+                        case 0:
+                            return "lukittu";
+                        case 1:
+                            return "viivaa yli";
+                        case 2:
+                            return "aseta tulos";
+                        default: return "virhe"; 
+                            
+                    }
+                }, buttonState)
             );
             button.disableProperty().bind(isLocked);
             scoreboard.add(button, 0, i);
             scoreboard.add(new Label(value.label), 1, i);
+            button.setOnAction((event) -> {
+                final int[] currentResult = result.getValue();
+                final ListProperty currentButtonState = buttonState;
+                this.game.addScore(index, currentButtonState, currentResult);
+            });
             i++;
             j++;
             
@@ -222,7 +240,7 @@ public class YatzyUi extends Application {
             for (ToggleButton button : buttons) {
                 button.setSelected(false);
             }
-            
+            this.game.updateButtonState(this.buttonState, newResult);
         });
         
         main.getChildren().add(roll);
