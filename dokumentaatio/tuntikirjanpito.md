@@ -10,4 +10,5 @@ päivä | tunnit | kuvaus
 17.12. | 2 | Lisäsin toiminnallisuutta Game-luokkaan.
 19.12. | 7 | Lisäsin pelisääntöjä koskevaa logiikkaa peliluokkaan ja tein UI:iin lisäyksiä.
 20.12. | 3 | Jatkoin pelisääntöjen logiikan koodaamista.
-yht. | 44 |
+21.12. | 5 | Jatkoin pelisääntöjen logiikan ja UI:n koodaamista.
+yht. | 49 |
