@@ -15,7 +15,7 @@ public class Dice {
 
     
     public int[] throwAllDice() {
-        return throwDice(new int[]{0,1,2,3,4});
+        return throwDice(new int[]{0, 1, 2, 3, 4});
     }
     
     public int[] throwDice(int[] throwableDice) {

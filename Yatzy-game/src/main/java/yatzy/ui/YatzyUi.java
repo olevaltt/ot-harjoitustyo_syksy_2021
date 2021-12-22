@@ -19,6 +19,7 @@ import javafx.beans.property.*;
 import javafx.beans.binding.*;
 import java.util.Collections;
 import javafx.collections.*;
+import java.util.List;
 
 
 public class YatzyUi extends Application {
@@ -27,12 +28,13 @@ public class YatzyUi extends Application {
     int nOf_players;
     private Game game;
     private Stage window;
-    private static final int SCREEN_WIDTH = 700;
-    private static final int SCREEN_HEIGHT = 700;
+    final private static int SCREEN_WIDTH = 700;
+    final private static int SCREEN_HEIGHT = 700;
     final private SimpleIntegerProperty throwCount;
     final private SimpleIntegerProperty currentTurn;
     final private SimpleObjectProperty<int[]> result;
     final private SimpleIntegerProperty currentPlayer;
+    final private SimpleListProperty<List<Integer>> playerScores;
     
     
     //0 -> button cannot be pressed
@@ -44,11 +46,13 @@ public class YatzyUi extends Application {
         this.dice = new Dice();
         this.nOf_players = -1;
         this.throwCount = new SimpleIntegerProperty(0);
-        this.currentTurn = new SimpleIntegerProperty(0);
+        this.currentTurn = new SimpleIntegerProperty(1);
         this.currentPlayer = new SimpleIntegerProperty(1);
         this.result = new SimpleObjectProperty(new int[]{1,1,1,1,1});
         ObservableList<Integer> observableList = FXCollections.observableArrayList(new ArrayList<Integer>(Collections.nCopies(15, 0)));
         this.buttonState = new SimpleListProperty<>(observableList);
+        this.playerScores = new SimpleListProperty<>();
+        
         
         
     }
@@ -117,6 +121,7 @@ public class YatzyUi extends Application {
     
     private void setGameScene() {
         this.game = new Game(this.nOf_players);
+        this.game.updatePlayerScores(playerScores);
         BorderPane gameLayout = new BorderPane();
         gameLayout.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         
@@ -141,7 +146,7 @@ public class YatzyUi extends Application {
             scoreboard.add(new Label("P" + x), 1 + x, 0);
         }
         
-        
+ 
         int i = 1;
         int j = 0;
         for (Category value: Category.values()) {
@@ -171,14 +176,30 @@ public class YatzyUi extends Application {
             scoreboard.add(button, 0, i);
             scoreboard.add(new Label(value.label), 1, i);
             button.setOnAction((event) -> {
-                final int[] currentResult = result.getValue();
-                final ListProperty currentButtonState = buttonState;
-                this.game.addScore(index, currentButtonState, currentResult);
+                this.game.addScore(index, result.getValue());
+                this.throwCount.set(this.game.getThrowCount());
+                this.currentTurn.set(this.game.getCurrentTurn());
+                this.currentPlayer.set(this.game.getCurrentPlayer().getPlayerId());
+                ObservableList<Integer> observableList = FXCollections.observableArrayList(new ArrayList<Integer>(Collections.nCopies(15, 0)));
+                this.buttonState.set(observableList);
+                this.game.updatePlayerScores(playerScores);
             });
+            for (int playerId = 0; playerId < this.nOf_players; playerId++) {
+                // alkaa 2.1.
+                Label label = new Label();
+                final int playerIdFinal = playerId;
+                label.textProperty().bind(Bindings.createStringBinding(() -> {
+                    Integer score = playerScores.get(playerIdFinal).get(index);
+                    return (score == null) ? "" : score.toString();
+                }, playerScores));
+                
+                scoreboard.add(label, playerId + 2, i);
+            }
+            
             i++;
             j++;
-            
         }
+        
         scoreboard.add(new Label("Yht."), 1, 7);
         scoreboard.add(new Label("Bonus"), 1, 8);
         scoreboard.add(new Label("Yht."), 1, 18);
@@ -265,6 +286,8 @@ public class YatzyUi extends Application {
         return this.dice.throwDice(diceIndicesArray);
    
     }
+    
+    
     
     
     public static void main(String[] args) {

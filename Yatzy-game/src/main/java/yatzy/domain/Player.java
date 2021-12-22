@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class Player {
     
-    public int playerID;
-    public HashMap<Category, Integer> playerScore;
+    final private int playerID;
+    private HashMap<Category, Integer> playerScore;
     
     public Player(int playerID) {
         this.playerScore = new HashMap<>();
@@ -13,7 +13,7 @@ public class Player {
     }
     
     
-    public int getPlayerNumber() {
+    public int getPlayerId() {
         return this.playerID;
     }
     

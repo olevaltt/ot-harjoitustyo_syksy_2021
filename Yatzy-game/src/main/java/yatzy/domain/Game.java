@@ -5,6 +5,12 @@ import java.util.Queue;
 import javafx.beans.property.ListProperty;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.List;
+import javafx.collections.FXCollections;
+
 
 
 public class Game {
@@ -17,13 +23,16 @@ public class Game {
     
     
     public Game(int playerCount) {
-        this.totalTurns = playerCount * 15;
-        for (int i = 0; i < playerCount - 1; i++) {
-            Player player = new Player(i + 1);
+        this.totalTurns = 15;
+        for (int i = 1; i <= playerCount; i++) {
+            Player player = new Player(i);
             players.add(player);
         }
     }
     
+    public Player getPlayerById(int id) {
+        return players.stream().filter(player -> player.getPlayerId() == id).findAny().orElse(null);
+    }
     /*
     public int getPlayerScore(Player player, Category category) {
         return player.getScore(category);
@@ -33,21 +42,20 @@ public class Game {
     public void addPlayerScore(Player player, Category category, int result) {
         player.addScore(category, result);
     }
-    
-    
-    private Player getPlayerById(int id) {
-        return players.stream().filter(player -> player.playerID == id).findAny().orElse(null);
-    }
-    
+
     public Player getCurrentPlayer() {
         return players.peek();
     }
     
     public void changeTurn() {
+        
+        if (getCurrentPlayer().getPlayerId() == this.players.size()) {
+            this.turnCounter++;
+        }
+        
         Player player = players.poll();
         players.add(player);
 
-        this.turnCounter++;
         this.throwCount = 0;
         if (turnCounter == totalTurns) {
             gameOver = true;
@@ -64,12 +72,24 @@ public class Game {
         return this.throwCount;
     }
     
+    public int getCurrentTurn() {
+        return this.turnCounter;
+    }
+    
     public boolean throwAllowed() {
         if (this.throwCount >= 3) {
             return false;
         } else {
             return true;
         }
+    }
+    
+    public void updatePlayerScores(ListProperty<List<Integer>> scores) {
+        scores.set(
+            FXCollections.observableList(IntStream.range(1, players.size() + 1).mapToObj((id) -> getPlayerById(id).getScore()).map((scoreMap) -> {
+                return Arrays.asList(Category.values()).stream().map((category) -> scoreMap.get(category)).collect(Collectors.toList());
+            }).collect(Collectors.toList()))
+        );
     }
     
     public void updateButtonState(ListProperty buttonState, int[] result) {
@@ -100,7 +120,7 @@ public class Game {
     public boolean checkIfScoreIsPlaceable(Category category, int[] result) {
         int[] thrownDice = this.checkThrownDice(result);
 
-        switch(category) {
+        switch (category) {
             case ONES:
                 return checkCategoryOnes(thrownDice);
                 
@@ -293,26 +313,19 @@ public class Game {
     }
     
     public boolean checkCategoryFullHouse(int[] thrownDice) {
-        ArrayList<Integer> howManyPairs = new ArrayList<>();
-        ArrayList<Integer> howManyThreeOfAKinds = new ArrayList<>();
+        int howManyPairs = 0;
+        int howManyThreeOfAKinds = 0;
 
-        for (int i = 0; i < thrownDice.length; i++) {
-            if (thrownDice[i] == 2) {
-                howManyPairs.add(i);
+        for (int amount : thrownDice) {
+            if (amount == 2) {
+                howManyPairs++;
+            } else if (amount == 3) {
+                howManyThreeOfAKinds++;
             }
         }
         
-        for (int i = 0; i < thrownDice.length; i++) {
-            if (thrownDice[i] == 3) {
-                howManyThreeOfAKinds.add(i);
-            }
-        }
-        
-        if (howManyPairs.size() == 1 && howManyThreeOfAKinds.size() == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return howManyPairs == 1 && howManyThreeOfAKinds == 1;
+
     }
     
     public boolean checkCategoryChance(int[] thrownDice) {
@@ -339,90 +352,107 @@ public class Game {
         for (int i = 0; i < thrownDice.length; i++) {
             thrownDice[i] = 0;
         } 
-        int Ones = 0;
-        int Twos = 0;
-        int Threes = 0;
-        int Fours = 0;
-        int Fives = 0;
-        int Sixes = 0;
+        int ones = 0;
+        int twos = 0;
+        int threes = 0;
+        int fours = 0;
+        int fives = 0;
+        int sixes = 0;
         
         for (int i = 0; i < result.length; i++) {
             if (result[i] == 1) {
-                Ones++;
+                ones++;
             } else if (result[i] == 2) {
-                Twos++;
+                twos++;
             } else if (result[i] == 3) {
-                Threes++;
+                threes++;
             } else if (result[i] == 4) {
-                Fours++;
+                fours++;
             } else if (result[i] == 5) {
-                Fives++;
+                fives++;
             } else {
-                Sixes++;
+                sixes++;
             }
         }
 
-        thrownDice[0] = Ones;
-        thrownDice[1] = Twos;
-        thrownDice[2] = Threes;
-        thrownDice[3] = Fours;
-        thrownDice[4] = Fives;
-        thrownDice[5] = Sixes;
+        thrownDice[0] = ones;
+        thrownDice[1] = twos;
+        thrownDice[2] = threes;
+        thrownDice[3] = fours;
+        thrownDice[4] = fives;
+        thrownDice[5] = sixes;
         return thrownDice;
     }
     
-    public void addScore(int categoryNumber, ListProperty buttonstate, int[] result) {
+    public void addScore(int categoryNumber, int[] result) {
         int[] thrownDice = checkThrownDice(result);
         Category[] categories = Category.values();
         
-        switch(categories[categoryNumber]) {
+        
+        switch (categories[categoryNumber]) {
             case ONES:
-               addCategoryOnesScore(thrownDice);
+                addCategoryOnesScore(thrownDice);
+                break;
                 
             case TWOS:
                 addCategoryTwosScore(thrownDice);
+                break;
                 
             case THREES:
                 addCategoryThreesScore(thrownDice);
+                break;
                 
             case FOURS:
                 addCategoryFoursScore(thrownDice);
+                break;
                     
             case FIVES:
                 addCategoryFivesScore(thrownDice);
+                break;
                 
             case SIXES:
                 addCategorySixesScore(thrownDice);
+                break;
                 
             case ONEPAIR:
                 addCategoryOnePairScore(thrownDice);
+                break;
                 
             case TWOPAIR:
                 addCategoryTwoPairScore(thrownDice);
+                break;
                 
             case THREEOFAKIND:
                 addCategoryThreeOfAKindScore(thrownDice);
+                break;
                 
             case FOUROFAKIND:
                 addCategoryFourOfAKindScore(thrownDice);
+                break;
                 
             case SMALLSTRAIGHT:
                 addCategorySmallStraightScore(thrownDice);
+                break;
                 
             case LARGESTRAIGHT:
                 addCategoryLargeStraightScore(thrownDice);
+                break;
                 
             case FULLHOUSE:
                 addCategoryFullHouseScore(thrownDice);
+                break;
                 
             case CHANCE:
                 addCategoryChanceScore(thrownDice);
+                break;
                 
             case YATZY:
                 addCategoryYatzyScore(thrownDice);
+                break;
                        
         }
-
+        
+        changeTurn();
     }
     
     public void addCategoryOnesScore(int[] thrownDice) { 
@@ -463,7 +493,7 @@ public class Game {
                     correctDice = i + 1;
                 }
             }
-            addPlayerScore(getCurrentPlayer(), Category.ONEPAIR, 2*(correctDice));
+            addPlayerScore(getCurrentPlayer(), Category.ONEPAIR, 2 * (correctDice));
         } else {
             addPlayerScore(getCurrentPlayer(), Category.ONEPAIR, 0);
         }
@@ -484,7 +514,7 @@ public class Game {
     }
     
     public void addCategoryThreeOfAKindScore(int[] thrownDice) {
-       int correctDice = 0;
+        int correctDice = 0;
         if (checkCategoryThreeOfAKind(thrownDice)) {
             for (int i = 0; i < thrownDice.length; i++) {
                 if (thrownDice[i] >= 3) {
@@ -531,10 +561,12 @@ public class Game {
     }
     
     public void addCategoryFullHouseScore(int[] thrownDice) {
+        
         if (checkCategoryFullHouse(thrownDice)) {
+            
             ArrayList<Integer> pairIndices = new ArrayList<>();
             for (int i = 0; i < thrownDice.length; i++) {
-                if (thrownDice[i] >= 4) {
+                if (thrownDice[i] >= 2) {
                     pairIndices.add(i);
                 }
             }
@@ -545,6 +577,7 @@ public class Game {
                 int score = pairIndices.get(1) * 3 + pairIndices.get(0) * 2;
                 addPlayerScore(getCurrentPlayer(), Category.FULLHOUSE, score);
             }
+            
         } else {
             addPlayerScore(getCurrentPlayer(), Category.FULLHOUSE, 0);
         }
