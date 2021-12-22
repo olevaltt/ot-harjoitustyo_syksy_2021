@@ -12,7 +12,6 @@ import java.util.List;
 import javafx.collections.FXCollections;
 
 
-
 public class Game {
     
     Queue<Player> players = new LinkedList<>();
@@ -20,8 +19,7 @@ public class Game {
     int turnCounter = 1;
     boolean gameOver = false;
     int throwCount = 0;
-    
-    
+
     public Game(int playerCount) {
         this.totalTurns = 15;
         for (int i = 1; i <= playerCount; i++) {
@@ -33,12 +31,7 @@ public class Game {
     public Player getPlayerById(int id) {
         return players.stream().filter(player -> player.getPlayerId() == id).findAny().orElse(null);
     }
-    /*
-    public int getPlayerScore(Player player, Category category) {
-        return player.getScore(category);
-    }
-    */
-    
+
     public void addPlayerScore(Player player, Category category, int result) {
         player.addScore(category, result);
     }
@@ -48,7 +41,6 @@ public class Game {
     }
     
     public void changeTurn() {
-        
         if (getCurrentPlayer().getPlayerId() == this.players.size()) {
             this.turnCounter++;
         }
@@ -77,11 +69,7 @@ public class Game {
     }
     
     public boolean throwAllowed() {
-        if (this.throwCount >= 3) {
-            return false;
-        } else {
-            return true;
-        }
+        return this.throwCount < 3;
     }
     
     public void updatePlayerScores(ListProperty<List<Integer>> scores) {
@@ -93,15 +81,12 @@ public class Game {
     }
     
     public void updateButtonState(ListProperty buttonState, int[] result) {
-        
         Category[] categories = Category.values();
         HashMap<Category, Integer> scoreMap = getCurrentPlayer().getScore();
 
         for (int i = 0; i < 15; i++) {
-            
             Integer score = scoreMap.get(categories[i]);
 
-            
             if (score != null) {
                 buttonState.set(i, 0);
             } else if (checkIfScoreIsPlaceable(categories[i], result)) {
@@ -110,11 +95,6 @@ public class Game {
                 buttonState.set(i, 1);
             }
         }
-        /*
-        System.out.println(buttonState.get(0));
-        System.out.println(buttonState.get(1));
-        System.out.println(buttonState.get(2));
-*/
     }
     
     public boolean checkIfScoreIsPlaceable(Category category, int[] result) {
@@ -166,59 +146,35 @@ public class Game {
             case YATZY:
                 return checkCategoryYatzy(thrownDice);
                 
-            default: return false;    
+            default:
+                return false;    
                        
         }
     }
     
     
     public boolean checkCategoryOnes(int[] thrownDice) {
-        if (thrownDice[0] > 0) {
-            return true;
-        } else {
-            return false;
-        }
-         
+        return thrownDice[0] > 0;
     }
     
     public boolean checkCategoryTwos(int[] thrownDice) {
-        if (thrownDice[1] > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return thrownDice[1] > 0;
     }
     
     public boolean checkCategoryThrees(int[] thrownDice) {
-        if (thrownDice[2] > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return thrownDice[2] > 0;
     }
     
     public boolean checkCategoryFours(int[] thrownDice) {
-        if (thrownDice[3] > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return thrownDice[3] > 0;
     }
     
     public boolean checkCategoryFives(int[] thrownDice) {
-        if (thrownDice[4] > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return thrownDice[4] > 0;
     }
     
     public boolean checkCategorySixes(int[] thrownDice) {
-        if (thrownDice[5] > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return thrownDice[5] > 0;
     }
     
     public boolean checkCategoryOnePair(int[] thrownDice) {
@@ -228,13 +184,7 @@ public class Game {
                 eligibleValues.add(i);
             }
         }
-        
-        if (eligibleValues.size() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-        
+        return eligibleValues.size() > 0;      
     }
     
     public boolean checkCategoryTwoPair(int[] thrownDice) {
@@ -245,71 +195,45 @@ public class Game {
                 howManyPairs.add(i);
             }
         }
-        
-        if (howManyPairs.size() == 2) {
-            return true;
-        } else {
-            return false;
-        }
-        
+        return howManyPairs.size() == 2;
     }
     
     public boolean checkCategoryThreeOfAKind(int[] thrownDice) {
-        
-        ArrayList<Integer> eligibleValues = new ArrayList<>();
         for (int i = 0; i < thrownDice.length; i++) {
             if (thrownDice[i] > 2) {
-                eligibleValues.add(i);
+                return true;
             }
         }
-        
-        if (eligibleValues.size() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-        
+        return false;
     }
     
     public boolean checkCategoryFourOfAKind(int[] thrownDice) {
-        ArrayList<Integer> eligibleValues = new ArrayList<>();
         for (int i = 0; i < thrownDice.length; i++) {
             if (thrownDice[i] > 3) {
                 return true;
             }
         }
         return false;
-
     }
     
     public boolean checkCategorySmallStraight(int[] thrownDice) {
-        ArrayList<Integer> eligibleValues = new ArrayList<>();
-        for (int i = 0; i < thrownDice.length - 1; i++) {
+        int eligibleValues = 0;
+        for (int i = 0; i < 5; i++) {
             if (thrownDice[i] == 1) {
-                eligibleValues.add(i);
+                eligibleValues++;
             }
         }
-        
-        if (eligibleValues.size() == 5) {
-            return true;
-        } else {
-            return false;
-        }
+        return eligibleValues == 5;
     }
     
     public boolean checkCategoryLargeStraight(int[] thrownDice) {
-        ArrayList<Integer> eligibleValues = new ArrayList<>();
-        for (int i = 1; i < thrownDice.length; i++) {
+        int eligibleValues = 0;
+        for (int i = 1; i < 6; i++) {
             if (thrownDice[i] == 1) {
-                eligibleValues.add(i);
+                eligibleValues++;
             }
         }
-        
-        if (eligibleValues.size() == 5) {
-            return true;
-        } else {
-            return false;
-        }
+        return eligibleValues == 5;
     }
     
     public boolean checkCategoryFullHouse(int[] thrownDice) {
@@ -325,7 +249,6 @@ public class Game {
         }
         
         return howManyPairs == 1 && howManyThreeOfAKinds == 1;
-
     }
     
     public boolean checkCategoryChance(int[] thrownDice) {
@@ -333,61 +256,25 @@ public class Game {
     }
     
     public boolean checkCategoryYatzy(int[] thrownDice) {
-        ArrayList<Integer> eligibleValues = new ArrayList<>();
         for (int i = 0; i < thrownDice.length; i++) {
             if (thrownDice[i] == 5) {
-                eligibleValues.add(i);
+                return true;
             }
         }
-        
-        if (eligibleValues.size() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
     
     public int[] checkThrownDice(int[] result) {
-        int[] thrownDice = new int[6];
-        for (int i = 0; i < thrownDice.length; i++) {
-            thrownDice[i] = 0;
-        } 
-        int ones = 0;
-        int twos = 0;
-        int threes = 0;
-        int fours = 0;
-        int fives = 0;
-        int sixes = 0;
-        
-        for (int i = 0; i < result.length; i++) {
-            if (result[i] == 1) {
-                ones++;
-            } else if (result[i] == 2) {
-                twos++;
-            } else if (result[i] == 3) {
-                threes++;
-            } else if (result[i] == 4) {
-                fours++;
-            } else if (result[i] == 5) {
-                fives++;
-            } else {
-                sixes++;
-            }
+        int[] thrownDice = {0,0,0,0,0,0};
+        for (int value : result) {
+            thrownDice[value - 1] = thrownDice[value - 1] + 1;
         }
-
-        thrownDice[0] = ones;
-        thrownDice[1] = twos;
-        thrownDice[2] = threes;
-        thrownDice[3] = fours;
-        thrownDice[4] = fives;
-        thrownDice[5] = sixes;
         return thrownDice;
     }
     
     public void addScore(int categoryNumber, int[] result) {
         int[] thrownDice = checkThrownDice(result);
         Category[] categories = Category.values();
-        
         
         switch (categories[categoryNumber]) {
             case ONES:
@@ -448,41 +335,33 @@ public class Game {
                 
             case YATZY:
                 addCategoryYatzyScore(thrownDice);
-                break;
-                       
+                break;         
         }
-        
         changeTurn();
     }
     
     public void addCategoryOnesScore(int[] thrownDice) { 
-        addPlayerScore(getCurrentPlayer(), Category.ONES, thrownDice[0] * 1);
-        
+        addPlayerScore(getCurrentPlayer(), Category.ONES, thrownDice[0] * 1);   
     }
     
     public void addCategoryTwosScore(int[] thrownDice) { 
         addPlayerScore(getCurrentPlayer(), Category.TWOS, thrownDice[1] * 2);
-        
     }
     
     public void addCategoryThreesScore(int[] thrownDice) { 
         addPlayerScore(getCurrentPlayer(), Category.THREES, thrownDice[2] * 3);
-        
     }
     
     public void addCategoryFoursScore(int[] thrownDice) {
         addPlayerScore(getCurrentPlayer(), Category.FOURS, thrownDice[3] * 4);
-        
     }
     
     public void addCategoryFivesScore(int[] thrownDice) {
         addPlayerScore(getCurrentPlayer(), Category.FIVES, thrownDice[4] * 5);
-        
     }
     
     public void addCategorySixesScore(int[] thrownDice) {
-        addPlayerScore(getCurrentPlayer(), Category.SIXES, thrownDice[5] * 6);
-        
+        addPlayerScore(getCurrentPlayer(), Category.SIXES, thrownDice[5] * 6); 
     }
     
     public void addCategoryOnePairScore(int[] thrownDice) {
@@ -525,7 +404,6 @@ public class Game {
         } else {
             addPlayerScore(getCurrentPlayer(), Category.THREEOFAKIND, 0);
         }
-        
     }
     
     public void addCategoryFourOfAKindScore(int[] thrownDice) {
@@ -540,8 +418,6 @@ public class Game {
         } else {
             addPlayerScore(getCurrentPlayer(), Category.FOUROFAKIND, 0);
         }
-        
-       
     }
     
     public void addCategorySmallStraightScore(int[] thrownDice) {
@@ -561,9 +437,7 @@ public class Game {
     }
     
     public void addCategoryFullHouseScore(int[] thrownDice) {
-        
         if (checkCategoryFullHouse(thrownDice)) {
-            
             ArrayList<Integer> pairIndices = new ArrayList<>();
             for (int i = 0; i < thrownDice.length; i++) {
                 if (thrownDice[i] >= 2) {
@@ -590,7 +464,6 @@ public class Game {
             sum = sum + (thrownDice[i] * i + 1);
         }
         addPlayerScore(getCurrentPlayer(), Category.CHANCE, sum);
-            
     }
     
     public void addCategoryYatzyScore(int[] thrownDice) {
@@ -604,9 +477,6 @@ public class Game {
             addPlayerScore(getCurrentPlayer(), Category.YATZY, 5 * correctDice + 50);
         } else {
             addPlayerScore(getCurrentPlayer(), Category.YATZY, 0);
-        }
-        
+        } 
     }
-    
-    
 }

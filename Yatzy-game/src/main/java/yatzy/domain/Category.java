@@ -1,6 +1,4 @@
-
 package yatzy.domain;
-
 
 public enum Category {
     ONES("1"),
@@ -24,7 +22,4 @@ public enum Category {
     private Category(String label) {
         this.label = label;
     }
-    
-    
-    
 }

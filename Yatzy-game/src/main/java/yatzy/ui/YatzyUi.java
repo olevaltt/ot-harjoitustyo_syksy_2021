@@ -26,7 +26,7 @@ import javafx.beans.value.ChangeListener;
 public class YatzyUi extends Application {
 
     final private Dice dice;
-    int nOf_players;
+    int numberOfPlayers;
     private Game game;
     private Stage window;
     final private static int SCREEN_WIDTH = 700;
@@ -41,21 +41,18 @@ public class YatzyUi extends Application {
     //0 -> button cannot be pressed
     //1 -> button can be pressed but the throw won't fit
     //2 -> button can be pressed and the throw fits
-    private SimpleListProperty<Integer> buttonState;
+    final private SimpleListProperty<Integer> buttonState;
     
     public YatzyUi() {
         this.dice = new Dice();
-        this.nOf_players = -1;
+        this.numberOfPlayers = -1;
         this.throwCount = new SimpleIntegerProperty(0);
         this.currentTurn = new SimpleIntegerProperty(1);
         this.currentPlayer = new SimpleIntegerProperty(1);
         this.result = new SimpleObjectProperty(new int[]{1,1,1,1,1});
-        ObservableList<Integer> observableList = FXCollections.observableArrayList(new ArrayList<Integer>(Collections.nCopies(15, 0)));
+        ObservableList<Integer> observableList = FXCollections.observableArrayList(new ArrayList<>(Collections.nCopies(15, 0)));
         this.buttonState = new SimpleListProperty<>(observableList);
-        this.playerScores = new SimpleListProperty<>();
-        
-        
-        
+        this.playerScores = new SimpleListProperty<>(); 
     }
     
     @Override
@@ -63,14 +60,6 @@ public class YatzyUi extends Application {
         this.window = window;
         setWelcomeScene();
     }
-
-    //So far its possible to initialize scoreboard and reroll dice.
-    
-    //Todo:
-    //Get number of players from user and initialize based on that. DONE
-    //Draw UI DONE
-    //Add turn conter
-    //Add turn queue
     
     private void setWelcomeScene() {
         BorderPane welcomeLayout = new BorderPane();
@@ -86,23 +75,22 @@ public class YatzyUi extends Application {
         buttons.getChildren().addAll(onePlayer, twoPlayer, threePlayer, fourPlayer);
         
         onePlayer.setOnAction((event) -> {
-            this.nOf_players = 1;
+            this.numberOfPlayers = 1;
             setGameScene();
         });
         
         twoPlayer.setOnAction((event) -> {
-            this.nOf_players = 2;
+            this.numberOfPlayers = 2;
             setGameScene();
         });
         
-
         threePlayer.setOnAction((event) -> {
-            this.nOf_players = 3;
+            this.numberOfPlayers = 3;
             setGameScene();
         });
         
         fourPlayer.setOnAction((event) -> {
-            this.nOf_players = 4;
+            this.numberOfPlayers = 4;
             setGameScene();
         });
         
@@ -121,23 +109,20 @@ public class YatzyUi extends Application {
     }
     
     private void setGameScene() {
-        this.game = new Game(this.nOf_players);
+        this.game = new Game(this.numberOfPlayers);
         this.game.updatePlayerScores(playerScores);
         BorderPane gameLayout = new BorderPane();
         gameLayout.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         
-        gameLayout.setLeft(drawScoreboard(this.nOf_players));
+        gameLayout.setLeft(drawScoreboard(this.numberOfPlayers));
         Scene gameScene = new Scene(gameLayout);
         
         gameLayout.setRight(drawDice());
         
         this.window.setScene(gameScene);
         this.window.show();
-        
     }
     
-    
-    //Add Panes inside GridPanes instead of Labels.
     
     private GridPane drawScoreboard(int numberOfPlayers) {
         GridPane scoreboard = new GridPane();
@@ -147,37 +132,35 @@ public class YatzyUi extends Application {
             scoreboard.add(new Label("P" + x), 1 + x, 0);
         }
         
- 
-        int i = 1;
-        int j = 0;
+        int rowIndex = 1;
+        int index = 0;
         for (Category value: Category.values()) {
-            if(i == 7) {
-                i = 9;
+            if(rowIndex == 7) {
+                rowIndex = 9;
             }
             
             Button button = new Button();
-            final int index = j;
-            BooleanBinding isLocked = Bindings.createBooleanBinding(() -> buttonState.get(index) == 0, buttonState);
+            final int indexFinal = index;
+            BooleanBinding isLocked = Bindings.createBooleanBinding(() -> buttonState.get(indexFinal) == 0, buttonState);
             button.textProperty().bind(
                 Bindings.createStringBinding(() -> {
-                    switch(buttonState.get(index)) {
-                        
+                    switch(buttonState.get(indexFinal)) {
                         case 0:
                             return "lukittu";
                         case 1:
                             return "viivaa yli";
                         case 2:
                             return "aseta tulos";
-                        default: return "virhe"; 
-                            
+                        default: 
+                            return "virhe"; 
                     }
                 }, buttonState)
             );
             button.disableProperty().bind(isLocked);
-            scoreboard.add(button, 0, i);
-            scoreboard.add(new Label(value.label), 1, i);
+            scoreboard.add(button, 0, rowIndex);
+            scoreboard.add(new Label(value.label), 1, rowIndex);
             button.setOnAction((event) -> {
-                this.game.addScore(index, result.getValue());
+                this.game.addScore(indexFinal, result.getValue());
                 this.throwCount.set(this.game.getThrowCount());
                 this.currentTurn.set(this.game.getCurrentTurn());
                 this.currentPlayer.set(this.game.getCurrentPlayer().getPlayerId());
@@ -185,20 +168,20 @@ public class YatzyUi extends Application {
                 this.buttonState.set(observableList);
                 this.game.updatePlayerScores(playerScores);
             });
-            for (int playerId = 0; playerId < this.nOf_players; playerId++) {
-                // alkaa 2.1.
+            
+            for (int playerId = 0; playerId < this.numberOfPlayers; playerId++) {
                 Label label = new Label();
                 final int playerIdFinal = playerId;
                 label.textProperty().bind(Bindings.createStringBinding(() -> {
-                    Integer score = playerScores.get(playerIdFinal).get(index);
+                    Integer score = playerScores.get(playerIdFinal).get(indexFinal);
                     return (score == null) ? "" : score.toString();
                 }, playerScores));
                 
-                scoreboard.add(label, playerId + 2, i);
+                scoreboard.add(label, playerId + 2, rowIndex);
             }
             
-            i++;
-            j++;
+            rowIndex++;
+            index++;
         }
         
         scoreboard.add(new Label("Yht."), 1, 7);
@@ -214,14 +197,13 @@ public class YatzyUi extends Application {
         VBox main = new VBox();
         Label turnInfo = new Label();
         StringBinding infoText = Bindings.createStringBinding(
-                () -> "Kierros " + String.valueOf(currentTurn.get()) + ", Pelaajan " + String.valueOf(currentPlayer.get()) + " vuoro, Heitetty " + String.valueOf(throwCount.get()) + " kertaa",
+                () -> String.format("Kierros %d, Pelaajan %d vuoro, Heitetty %d kertaa.", currentTurn.get(), currentPlayer.get(), throwCount.get()),
                 currentPlayer, currentTurn, throwCount
         );
         
         turnInfo.textProperty().bind(infoText);
         main.getChildren().add(turnInfo);
 
-        
         GridPane grid = new GridPane();
                 
         for (int i = 0; i < 5; i++) {
@@ -293,16 +275,6 @@ public class YatzyUi extends Application {
         return this.dice.throwDice(diceIndicesArray);
    
     }
-    
-    private void forceAllDiceSelected(ToggleButton[] buttons) {
-        for (ToggleButton button : buttons) {
-            button.setSelected(true);
-            button.setDisable(true);
-        }
-    }
-    
-    
-    
     
     public static void main(String[] args) {
         launch(YatzyUi.class);
