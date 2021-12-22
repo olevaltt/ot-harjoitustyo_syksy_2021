@@ -601,9 +601,9 @@ public class Game {
                     correctDice = i + 1;
                 }
             }
-            addPlayerScore(getCurrentPlayer(), Category.FOUROFAKIND, 5 * correctDice + 50);
+            addPlayerScore(getCurrentPlayer(), Category.YATZY, 5 * correctDice + 50);
         } else {
-            addPlayerScore(getCurrentPlayer(), Category.FOUROFAKIND, 0);
+            addPlayerScore(getCurrentPlayer(), Category.YATZY, 0);
         }
         
     }

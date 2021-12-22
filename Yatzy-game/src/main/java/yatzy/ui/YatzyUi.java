@@ -20,6 +20,7 @@ import javafx.beans.binding.*;
 import java.util.Collections;
 import javafx.collections.*;
 import java.util.List;
+import javafx.beans.value.ChangeListener;
 
 
 public class YatzyUi extends Application {
@@ -233,11 +234,17 @@ public class YatzyUi extends Application {
 
         ToggleButton[] buttons = new ToggleButton[5];
         for (int i = 0; i < buttons.length; i++) {
-            buttons[i] = new ToggleButton("Valitse");
-        }
-
-        for (int i = 0; i < buttons.length; i++) {
-            grid.add(buttons[i], i, 1);
+            ToggleButton button = new ToggleButton("Valitse");
+            button.disableProperty().bind(throwCount.isEqualTo(0));
+            ChangeListener throwCountListener = (observable, oldValue, newValue) -> {
+                if ((int) newValue == 0) {
+                    button.selectedProperty().set(true);
+                }
+            };
+            button.selectedProperty().set(true);
+            throwCount.addListener(throwCountListener);
+            buttons[i] = button;
+            grid.add(button, i, 1);
         }
         
         main.getChildren().add(grid);
@@ -285,6 +292,13 @@ public class YatzyUi extends Application {
         this.throwCount.set(this.game.getThrowCount());
         return this.dice.throwDice(diceIndicesArray);
    
+    }
+    
+    private void forceAllDiceSelected(ToggleButton[] buttons) {
+        for (ToggleButton button : buttons) {
+            button.setSelected(true);
+            button.setDisable(true);
+        }
     }
     
     
