@@ -12,5 +12,5 @@ päivä | tunnit | kuvaus
 20.12. | 3 | Jatkoin pelisääntöjen logiikan koodaamista.
 21.12. | 5 | Jatkoin pelisääntöjen logiikan ja UI:n koodaamista.
 22.12. | 5 | Koodasin nopan heittämisen loppuun.
-23.12. | 5 | Koodasin pisteiden laskemisen toiminnon.
-yht. | 59 |
+23.12. | 7 | Koodasin pisteiden laskemisen toiminnon ja loppunäkymän.
+yht. | 61 |
