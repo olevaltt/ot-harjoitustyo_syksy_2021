@@ -228,17 +228,7 @@ public class YatzyUi extends Application {
             scoreboard.add(button, 0, rowIndex);
             scoreboard.add(new Label(value.label), 1, rowIndex);
             button.setOnAction((event) -> {
-                this.game.addScore(indexFinal, result.getValue());
-                this.throwCount.set(this.game.getThrowCount());
-                this.currentTurn.set(this.game.getCurrentTurn());
-                this.currentPlayer.set(this.game.getCurrentPlayer().getPlayerId());
-                ObservableList<Integer> observableList = FXCollections.observableArrayList(new ArrayList<Integer>(Collections.nCopies(15, 0)));
-                this.buttonState.set(observableList);
-                this.game.updatePlayerScores(playerScores);
-                this.winnerFound = this.game.getWinnerFound();
-                if (this.winnerFound == true) {
-                    setWinnerScene();
-                }
+                addScoreAndChangeTurn(indexFinal);
             });
             
             for (int playerId = 0; playerId < this.numberOfPlayers; playerId++) {
@@ -346,6 +336,20 @@ public class YatzyUi extends Application {
         this.throwCount.set(this.game.getThrowCount());
         return this.dice.throwDice(diceIndicesArray);
    
+    }
+    
+    public void addScoreAndChangeTurn(int rowIndex) {
+        this.game.addScore(rowIndex, result.getValue());
+        this.throwCount.set(this.game.getThrowCount());
+        this.currentTurn.set(this.game.getCurrentTurn());
+        this.currentPlayer.set(this.game.getCurrentPlayer().getPlayerId());
+        ObservableList<Integer> observableList = FXCollections.observableArrayList(new ArrayList<Integer>(Collections.nCopies(15, 0)));
+        this.buttonState.set(observableList);
+        this.game.updatePlayerScores(playerScores);
+        this.winnerFound = this.game.getWinnerFound();
+        if (this.winnerFound == true) {
+            setWinnerScene();
+        }
     }
     
     public void setWinnerScene() {

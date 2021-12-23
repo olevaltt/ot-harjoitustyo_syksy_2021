@@ -272,7 +272,7 @@ public class Game {
     }
     
     public int[] checkThrownDice(int[] result) {
-        int[] thrownDice = {0,0,0,0,0,0};
+        int[] thrownDice = {0, 0, 0, 0, 0, 0};
         for (int value : result) {
             thrownDice[value - 1] = thrownDice[value - 1] + 1;
         }
