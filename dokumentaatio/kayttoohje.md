@@ -44,4 +44,4 @@ Tuloksia laskiessa jokaisen heitetyn nopan silmäluku lisätään yhteen poikkeu
 
 ## Pelin loppuminen
 
-Peli loppuu kun jokainen pelaaja on täyttäny pistetaulukkonsa. Tämän jälkeen pelaajien nähtäväksi avautuu ikkuna, jossa on näkyvillä pelaajien loppupisteet ja pelin voittaja.
+Peli loppuu, kun jokainen pelaaja on täyttäny pistetaulukkonsa. Tämän jälkeen pelaajien nähtäväksi avautuu ikkuna, jossa on näkyvillä pelaajien loppupisteet ja pelin voittaja.
