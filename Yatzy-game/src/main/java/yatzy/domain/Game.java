@@ -445,20 +445,15 @@ public class Game {
     
     public void addCategoryFullHouseScore(int[] thrownDice) {
         if (checkCategoryFullHouse(thrownDice)) {
-            ArrayList<Integer> pairIndices = new ArrayList<>();
+            int sum = 0;
             for (int i = 0; i < thrownDice.length; i++) {
-                if (thrownDice[i] >= 2) {
-                    pairIndices.add(i);
+                if (thrownDice[i] == 2) {
+                    sum += 2 * (i + 1);
+                } else if (thrownDice[i] == 3) {
+                    sum += 3 * (i + 1);
                 }
             }
-            if (pairIndices.get(0) > pairIndices.get(1)) {
-                int score = pairIndices.get(0) * 3 + pairIndices.get(1) * 2;
-                addPlayerScore(getCurrentPlayer(), Category.FULLHOUSE, score);
-            } else {
-                int score = pairIndices.get(1) * 3 + pairIndices.get(0) * 2;
-                addPlayerScore(getCurrentPlayer(), Category.FULLHOUSE, score);
-            }
-            
+            addPlayerScore(getCurrentPlayer(), Category.FULLHOUSE, sum);
         } else {
             addPlayerScore(getCurrentPlayer(), Category.FULLHOUSE, 0);
         }
@@ -466,9 +461,8 @@ public class Game {
     
     public void addCategoryChanceScore(int[] thrownDice) {
         int sum = 0;
-        ArrayList<Integer> eligibleValues = new ArrayList<>();
         for (int i = 0; i < thrownDice.length; i++) {
-            sum = sum + (thrownDice[i] * i + 1);
+            sum = sum + (thrownDice[i] * (i + 1));
         }
         addPlayerScore(getCurrentPlayer(), Category.CHANCE, sum);
     }

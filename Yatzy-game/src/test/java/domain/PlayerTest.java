@@ -30,5 +30,10 @@ public class PlayerTest {
     public void createdPlayer2Exists() {
         assertTrue(player2!=null);
     }
+    
+    @Test
+    public void toStringIsNotNull() {
+        assertNotNull(player.toString());
+    }
 
 }

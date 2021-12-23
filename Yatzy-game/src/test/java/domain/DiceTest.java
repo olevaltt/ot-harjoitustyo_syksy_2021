@@ -32,4 +32,9 @@ public void getResultDoesNotReturnNull() {
     assertNotEquals(testDice.getResult(), null);
 }
 
+@Test
+public void throwAllDiceDoesNotReturnNull() {
+    assertNotEquals(testDice.throwAllDice(), null);
+}
+
 }
