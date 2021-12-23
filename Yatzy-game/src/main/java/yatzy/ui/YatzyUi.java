@@ -5,14 +5,9 @@ import yatzy.domain.Category;
 import yatzy.domain.Dice;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
+import javafx.scene.control.*;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
-import javafx.scene.control.ToggleButton;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.beans.property.*;
@@ -21,6 +16,7 @@ import java.util.Collections;
 import javafx.collections.*;
 import java.util.List;
 import javafx.beans.value.ChangeListener;
+import java.util.stream.IntStream;
 
 
 public class YatzyUi extends Application {
@@ -36,7 +32,9 @@ public class YatzyUi extends Application {
     final private SimpleObjectProperty<int[]> result;
     final private SimpleIntegerProperty currentPlayer;
     final private SimpleListProperty<List<Integer>> playerScores;
-    
+    final private SimpleObjectProperty<int[]> upperTotal;
+    final private SimpleObjectProperty<Boolean[]> bonus;
+    final private SimpleObjectProperty<int[]> grandTotal;
     
     //0 -> button cannot be pressed
     //1 -> button can be pressed but the throw won't fit
@@ -52,7 +50,10 @@ public class YatzyUi extends Application {
         this.result = new SimpleObjectProperty(new int[]{1,1,1,1,1});
         ObservableList<Integer> observableList = FXCollections.observableArrayList(new ArrayList<>(Collections.nCopies(15, 0)));
         this.buttonState = new SimpleListProperty<>(observableList);
-        this.playerScores = new SimpleListProperty<>(); 
+        this.playerScores = new SimpleListProperty<>();
+        this.upperTotal = new SimpleObjectProperty<>();
+        this.bonus = new SimpleObjectProperty<>();
+        this.grandTotal = new SimpleObjectProperty<>();
     }
     
     @Override
@@ -110,13 +111,59 @@ public class YatzyUi extends Application {
     
     private void setGameScene() {
         this.game = new Game(this.numberOfPlayers);
+        
         this.game.updatePlayerScores(playerScores);
+        
+        int[] newUpperTotal = new int[this.numberOfPlayers];
+        Arrays.fill(newUpperTotal, 0);
+        this.upperTotal.set(newUpperTotal);
+        this.upperTotal.bind(Bindings.createObjectBinding(() -> {
+            return playerScores.get().stream().mapToInt((scoreList) -> {
+                int sum = 0;
+                for (int i = 0; i < 6; i++) {
+                    if (scoreList.get(i) != null) {
+                        sum = sum + scoreList.get(i);
+                    }
+                }
+                return sum;
+            }).toArray();
+        }, playerScores));
+        
+        Boolean[] newBonus = new Boolean[this.numberOfPlayers];
+        Arrays.fill(newBonus, false);
+        this.bonus.set(newBonus);
+        this.bonus.bind(Bindings.createObjectBinding(() -> {
+            Boolean[] ar = new Boolean[this.numberOfPlayers];
+            for (int i = 0; i < this.numberOfPlayers; i++) {
+                ar[i] = upperTotal.get()[i] >= 63;
+            }
+            return ar;
+        }, upperTotal));
+        
+        int[] newGrandTotal = new int[this.numberOfPlayers];
+        Arrays.fill(newGrandTotal, 0);
+        this.grandTotal.set(newGrandTotal);
+        this.grandTotal.bind(Bindings.createObjectBinding(() -> {
+            return IntStream.range(0, this.numberOfPlayers).map((index) -> {
+                List<Integer> scoreList = playerScores.get(index);
+                int sum = 0;
+                sum = sum + upperTotal.get()[index];
+                if (bonus.get()[index]) {
+                    sum = sum + this.game.getBonusAmount();
+                }
+                for (int i = 6; i < 15; i++) {
+                    if (scoreList.get(i) != null) {
+                        sum = sum + scoreList.get(i);
+                    }
+                }
+                return sum;
+            }).toArray();
+        }, playerScores, upperTotal, bonus));
+        
         BorderPane gameLayout = new BorderPane();
         gameLayout.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-        
         gameLayout.setLeft(drawScoreboard(this.numberOfPlayers));
         Scene gameScene = new Scene(gameLayout);
-        
         gameLayout.setRight(drawDice());
         
         this.window.setScene(gameScene);
@@ -128,8 +175,27 @@ public class YatzyUi extends Application {
         GridPane scoreboard = new GridPane();
         scoreboard.setGridLinesVisible(true);
         
-        for (int x = 1; x < 1 + numberOfPlayers; x++) {
-            scoreboard.add(new Label("P" + x), 1 + x, 0);
+        for (int playerId = 0; playerId < numberOfPlayers; playerId++) {
+            int column = playerId + 2;
+            final int playerIdFinal = playerId;
+            scoreboard.add(new Label("P" + (playerId + 1)), column, 0);
+            Label upperTotalLabel = new Label();
+            upperTotalLabel.textProperty().bind(Bindings.createStringBinding(() -> {
+                return String.valueOf(upperTotal.get()[playerIdFinal]);
+            }, upperTotal));
+            scoreboard.add(upperTotalLabel, column, 7);
+            
+            Label bonusLabel = new Label();
+            bonusLabel.textProperty().bind(Bindings.createStringBinding(() -> {
+                return (bonus.get()[playerIdFinal]) ? String.valueOf(this.game.getBonusAmount()) : "";
+            }, bonus));
+            scoreboard.add(bonusLabel, column, 8);
+            
+            Label grandTotalLabel = new Label();
+            grandTotalLabel.textProperty().bind(Bindings.createStringBinding(() -> {
+                return String.valueOf(grandTotal.get()[playerIdFinal]);
+            }, grandTotal));
+            scoreboard.add(grandTotalLabel, column, 18);
         }
         
         int rowIndex = 1;
