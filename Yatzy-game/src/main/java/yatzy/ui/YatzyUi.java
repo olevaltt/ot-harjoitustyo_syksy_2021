@@ -35,6 +35,7 @@ public class YatzyUi extends Application {
     final private SimpleObjectProperty<int[]> upperTotal;
     final private SimpleObjectProperty<Boolean[]> bonus;
     final private SimpleObjectProperty<int[]> grandTotal;
+    private boolean winnerFound;
     
     //0 -> button cannot be pressed
     //1 -> button can be pressed but the throw won't fit
@@ -54,6 +55,7 @@ public class YatzyUi extends Application {
         this.upperTotal = new SimpleObjectProperty<>();
         this.bonus = new SimpleObjectProperty<>();
         this.grandTotal = new SimpleObjectProperty<>();
+        this.winnerFound = false;
     }
     
     @Override
@@ -233,6 +235,10 @@ public class YatzyUi extends Application {
                 ObservableList<Integer> observableList = FXCollections.observableArrayList(new ArrayList<Integer>(Collections.nCopies(15, 0)));
                 this.buttonState.set(observableList);
                 this.game.updatePlayerScores(playerScores);
+                this.winnerFound = this.game.getWinnerFound();
+                if (this.winnerFound == true) {
+                    setWinnerScene();
+                }
             });
             
             for (int playerId = 0; playerId < this.numberOfPlayers; playerId++) {
@@ -342,8 +348,34 @@ public class YatzyUi extends Application {
    
     }
     
+    public void setWinnerScene() {
+        BorderPane winnerLayout = new BorderPane();
+        winnerLayout.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        
+        GridPane finalScores = new GridPane();
+        int winner = 0;
+        int winnerScore = 0;
+        for (int i = 0; i < this.numberOfPlayers; i++) {
+            Label player = new Label(this.game.getPlayerById(i + 1).toString());
+            finalScores.add(player, 0, i);
+            if (grandTotal.get()[i] > winnerScore) {
+                winner = i + 1;
+                winnerScore = grandTotal.get()[i];
+            }
+            Label finalScore = new Label(" Pisteet: " + Integer.toString(grandTotal.get()[i]));
+            finalScores.add(finalScore, 1, i);
+        }
+        Label winnerLabel = new Label("Voittaja on: " + this.game.getPlayerById(winner));
+        finalScores.add(winnerLabel, 0, this.numberOfPlayers);
+        
+        winnerLayout.setCenter(finalScores);
+        Scene winnerScene = new Scene(winnerLayout);
+       
+        this.window.setScene(winnerScene);
+        this.window.show();
+    }
+    
     public static void main(String[] args) {
         launch(YatzyUi.class);
     }
-    
 }

@@ -23,5 +23,8 @@ public class Player {
     public HashMap<Category, Integer> getScore() {
         return this.playerScore; 
     }
-    
+    @Override
+    public String toString() {
+        return "Pelaaja " + this.playerID;
+    }
 }

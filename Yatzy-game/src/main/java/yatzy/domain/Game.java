@@ -17,7 +17,7 @@ public class Game {
     Queue<Player> players = new LinkedList<>();
     int totalTurns;
     int turnCounter = 1;
-    boolean gameOver = false;
+    boolean winnerFound = false;
     int throwCount = 0;
     final int bonusAmount = 50;
 
@@ -50,15 +50,17 @@ public class Game {
         players.add(player);
 
         this.throwCount = 0;
-        if (turnCounter == totalTurns) {
-            gameOver = true;
-            System.out.println("Game Over");
-            //Game over --> calculate points and announce winner
+        if (turnCounter == totalTurns + 1) {
+            winnerFound = true;
         }
     }
     
     public int getBonusAmount() {
         return this.bonusAmount;
+    }
+    
+    public boolean getWinnerFound() {
+        return winnerFound;
     }
     
     public void increaseThrowCounter() {
