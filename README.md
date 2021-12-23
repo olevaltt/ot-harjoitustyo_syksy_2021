@@ -10,9 +10,13 @@ Tällä sovelluksella voi pelata noppapeli Yatzya "hot-seat"-muotoisesti 1-4 pel
 
 [Arkkitehtuuri](https://github.com/olevaltt/ot-harjoitustyo_syksy_2021/blob/master/dokumentaatio/arkkitehtuuri.md)
 
+[Käyttöohje](https://github.com/olevaltt/ot-harjoitustyo_syksy_2021/blob/master/dokumentaatio/kayttoohje.md)
+
 ## Releaset
 
 [viikko 5](https://github.com/olevaltt/ot-harjoitustyo_syksy_2021/releases/tag/viikko5)
+
+[Loppupalautus](https://github.com/olevaltt/ot-harjoitustyo_syksy_2021/releases/tag/Loppupalautus)
 
 ## Ohjeet ja komentorivikomennot
 - Jar-tiedoston luonti onnistuu komennolla
