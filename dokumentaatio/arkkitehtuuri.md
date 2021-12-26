@@ -50,3 +50,7 @@ Game luokka vastaa pelin logiikasta.
 - Sekvenssikaavio nopan heittämisestä
 
 ![image](https://github.com/olevaltt/ot-harjoitustyo_syksy_2021/blob/master/dokumentaatio/kuvat/sekvenssikaavio1.jpg)
+
+- Sekvenssikaavio pisteiden lisäämisestä
+
+![image](https://github.com/olevaltt/ot-harjoitustyo_syksy_2021/blob/master/dokumentaatio/kuvat/sekvenssikaavio_pisteiden_tallennus.jpg)
