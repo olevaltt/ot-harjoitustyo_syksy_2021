@@ -31,5 +31,7 @@ Tällä sovelluksella voi pelata noppapeli Yatzya "hot-seat"-muotoisesti 1-4 pel
 
 - Testikattavuusraportin voi generoida komennolla
   - mvn test jacoco:report
+    - Raportti generoituu nimellä index.html kansioon jacoco, joka löytyy kansiosta site, kansion target sisältä.
 - Checkstyletarkastuksen voi suorittaa komennolla 
   - mvn jxr:jxr checkstyle:checkstyle
+    - checkstyle.html niminen raportti generoituu kansioon site, kansion target sisälle.
