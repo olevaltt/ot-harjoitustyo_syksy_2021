@@ -12,6 +12,8 @@ Tällä sovelluksella voi pelata noppapeli Yatzya "hot-seat"-muotoisesti 1-4 pel
 
 [Käyttöohje](https://github.com/olevaltt/ot-harjoitustyo_syksy_2021/blob/master/dokumentaatio/kayttoohje.md)
 
+[Testausdokumentti](https://github.com/olevaltt/ot-harjoitustyo_syksy_2021/blob/master/dokumentaatio/testaus.md)
+
 ## Releaset
 
 [viikko 5](https://github.com/olevaltt/ot-harjoitustyo_syksy_2021/releases/tag/viikko5)
